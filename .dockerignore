@@ -1,0 +1,40 @@
+# Cache & Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Virtual environment
+venv/
+.env/
+*.env
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore
+
+# Logs & temp
+*.log
+*.tmp
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Node modules (kalau pakai frontend di project)
+node_modules/
+
+# Docker sendiri
+Dockerfile
+.dockerignore
