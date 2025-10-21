@@ -111,3 +111,307 @@ footer {
     height: 100%;
     border: none;
 }
+
+.predict-container {
+    max-width: 850px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.page-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.form-card {
+    padding: 20px;
+    border-radius: 10px;
+    background: #fafafa;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.form-row label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #444;
+}
+
+.form-row input,
+.form-row select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.predict-btn {
+    background-color: #007bff;
+    color: white;
+    font-weight: 600;
+    padding: 10px 28px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.predict-btn:hover {
+    background-color: #0056b3;
+}
+
+.prediction-result {
+    text-align: center;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.prediction-value {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.prediction-value.yes { color: #e63946; }
+.prediction-value.no { color: #2a9d8f; }
+
+.prediction-probability {
+    font-weight: 600;
+    color: #333;
+}
+
+/* 🧩 Update untuk grid form */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 kolom: kiri & kanan */
+    column-gap: 30px;
+    row-gap: 20px;
+    margin-top: 10px;
+}
+
+/* Biar input box & dropdown seragam */
+.form-row input,
+.form-row select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* Label tetap rapi */
+.form-row label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* 🧭 Tooltip biar sejajar */
+label .tooltip {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Tombol submit agak jauh dari input */
+.predict-btn {
+    background-color: #007bff;
+    color: white;
+    font-weight: 600;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 30px;  /* 🔥 Tambahin jarak bawah form */
+}
+
+.predict-btn:hover {
+    background-color: #0056b3;
+}
+
+/* ===== HOME PAGE ===== */
+.home-container {
+  text-align: center;
+  padding: 60px 20px;
+  color: #333;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #2980b9, #6dd5fa);
+  color: white;
+  border-radius: 12px;
+  padding: 60px 20px;
+  max-width: 900px;
+  margin: 0 auto 60px auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.hero-content h1 {
+  font-size: 2.4rem;
+  margin-bottom: 15px;
+}
+
+.hero-content .highlight {
+  color: #ffe082;
+}
+
+.hero-content p {
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto 30px auto;
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn-main, .btn-secondary {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-main {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-main:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: white;
+  color: #007bff;
+  border: 2px solid #007bff;
+}
+
+.btn-secondary:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+/* ==== FEATURES SECTION ==== */
+.features-section {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: -10px 20px;
+}
+
+.features-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.feature-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.feature-card h3 {
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.footer-note {
+  margin-top: 60px;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+/* ===== DASHBOARD PAGE ===== */
+.dashboard {
+  text-align: center;
+  padding: 40px 20px;
+  background: #f8fafc;
+}
+
+.dashboard-header {
+  max-width: 1000px;
+  margin: 0 auto 30px auto;
+}
+
+.dashboard-header h1 {
+  color: #2c3e50;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.dashboard-header p {
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.iframe-wrapper {
+  width: 95%;              /* 💡 Lebih lebar dari sebelumnya */
+  max-width: 1300px;       /* 💡 Biar bisa tampil full di layar lebar */
+  height: 85vh;            /* 💡 Tingginya diperbesar agar terasa seperti full-dashboard */
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.iframe-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* 📱 Responsive tweaks */
+@media (max-width: 900px) {
+  .iframe-wrapper {
+    width: 100%;
+    height: 75vh;
+  }
+}
+

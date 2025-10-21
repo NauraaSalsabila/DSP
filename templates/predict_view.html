@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% block title %}Employee Attrition Prediction{% endblock %}
+{% block content %}
+<style>
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+  color: #007bff;
+  font-weight: bold;
+  margin-left: 6px;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 230px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 13px;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
+
+<div class="predict-container">
+  <h1>Employee Attrition Prediction</h1>
+
+  {% if prediction %}
+  <div class="prediction-result">
+    <h2>Prediction Result</h2>
+    <div class="prediction-value {% if prediction == 'Yes' %}yes{% else %}no{% endif %}">
+      {{ prediction }}
+    </div>
+
+    {% if probability %}
+    <p class="prediction-probability">
+      Confidence: <strong>{{ probability }}</strong>
+    </p>
+    {% endif %}
+
+    <p class="prediction-explanation">
+      {% if prediction == 'Yes' %}
+      High risk of attrition. Consider reviewing employee engagement strategies.
+      {% else %}
+      Low risk of attrition. Continue maintaining positive work environment.
+      {% endif %}
+    </p>
+  </div>
+  {% endif %}
+
+  <form method="post" class="predict-form">
+    <div class="form-grid">
+
+      <!-- AGE -->
+      <div class="form-row">
+        <label for="age">
+          Age
+          <span class="tooltip">ℹ️
+            <span class="tooltiptext">Umur karyawan (18–65 tahun)</span>
+          </span>
+        </label>
+        <input id="age" type="number" name="Age"
+               value="{{ features['Age'] if features else '' }}"
+               min="18" max="65" required>
+      </div>
+
+      <!-- STOCK OPTION LEVEL -->
+      <div class="form-row">
+        <label for="stockoptionlevel">
+          Stock Option Level
+          <span class="tooltip">ℹ️
+            <span class="tooltiptext">
+              0 = Tidak ada saham<br>
+              1 = Rendah<br>
+              2 = Menengah<br>
+              3 = Tinggi
+            </span>
+          </span>
+        </label>
+        <select id="stockoptionlevel" name="StockOptionLevel" required>
+          {% for i in range(0, 4) %}
+          <option value="{{ i }}" {% if features and features['StockOptionLevel']|int == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- JOB LEVEL -->
+      <div class="form-row">
+        <label for="joblevel">
+          Job Level
+          <span class="tooltip">ℹ️
+            <span class="tooltiptext">
+              1 = Staff<br>
+              2 = Senior Staff<br>
+              3 = Supervisor<br>
+              4 = Manager<br>
+              5 = Senior Manager
+            </span>
+          </span>
+        </label>
+        <select id="joblevel" name="JobLevel" required>
+          {% for i in range(1, 6) %}
+          <option value="{{ i }}" {% if features and features['JobLevel']|int == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- ENVIRONMENT SATISFACTION -->
+      <div class="form-row">
+        <label for="environmentsatisfaction">
+          Environment Satisfaction
+          <span class="tooltip">ℹ️
+            <span class="tooltiptext">
+              1 = Very Low<br>
+              2 = Low<br>
+              3 = Medium<br>
+              4 = High
+            </span>
+          </span>
+        </label>
+        <select id="environmentsatisfaction" name="EnvironmentSatisfaction" required>
+          {% for i in range(1, 5) %}
+          <option value="{{ i }}" {% if features and features['EnvironmentSatisfaction']|int == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- JOB INVOLVEMENT -->
+      <div class="form-row">
+        <label for="jobinvolvement">
+          Job Involvement
+          <span class="tooltip">ℹ️
+            <span class="tooltiptext">
+              1 = Low<br>
+              2 = Moderate<br>
+              3 = High<br>
+              4 = Very High
+            </span>
+          </span>
+        </label>
+        <select id="jobinvolvement" name="JobInvolvement" required>
+          {% for i in range(1, 5) %}
+          <option value="{{ i }}" {% if features and features['JobInvolvement']|int == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- JOB SATISFACTION -->
+      <div class="form-row">
+        <label for="jobsatisfaction">
+          Job Satisfaction
+          <span class="tooltip">ℹ️
+            <span class="tooltiptext">
+              1 = Very Low<br>
+              2 = Low<br>
+              3 = Medium<br>
+              4 = High
+            </span>
+          </span>
+        </label>
+        <select id="jobsatisfaction" name="JobSatisfaction" required>
+          {% for i in range(1, 5) %}
+          <option value="{{ i }}" {% if features and features['JobSatisfaction']|int == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- OVERTIME -->
+      <div class="form-row">
+        <label for="overtime">Overtime</label>
+        <select id="overtime" name="OverTime" required>
+          <option value="Yes" {% if features and features['OverTime'] == 'Yes' %}selected{% endif %}>Yes</option>
+          <option value="No" {% if features and features['OverTime'] == 'No' %}selected{% endif %}>No</option>
+        </select>
+      </div>
+
+      <!-- MARITAL STATUS -->
+      <div class="form-row">
+        <label for="maritalstatus">Marital Status</label>
+        <select id="maritalstatus" name="MaritalStatus" required>
+          <option value="Married" {% if features and features['MaritalStatus'] == 'Married' %}selected{% endif %}>Married</option>
+          <option value="Single" {% if features and features['MaritalStatus'] == 'Single' %}selected{% endif %}>Single</option>
+          <option value="Divorced" {% if features and features['MaritalStatus'] == 'Divorced' %}selected{% endif %}>Divorced</option>
+        </select>
+      </div>
+
+      <!-- JOB ROLE -->
+      <div class="form-row">
+        <label for="jobrole">Job Role</label>
+        <select id="jobrole" name="JobRole" required>
+          {% for role in [
+            "Human Resources", "Healthcare Representative", "Research Scientist",
+            "Sales Executive", "Manager", "Laboratory Technician",
+            "Research Director", "Manufacturing Director", "Sales Representative"
+          ] %}
+          <option value="{{ role }}" {% if features and features['JobRole'] == role %}selected{% endif %}>{{ role }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- BUSINESS TRAVEL -->
+      <div class="form-row">
+        <label for="businesstravel">Business Travel</label>
+        <select id="businesstravel" name="BusinessTravel" required>
+          {% for bt in ["Travel_Rarely", "Travel_Frequently", "Non-Travel"] %}
+          <option value="{{ bt }}" {% if features and features['BusinessTravel'] == bt %}selected{% endif %}>{{ bt }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+    </div>
+
+    <button type="submit" class="predict-btn">Submit</button>
+  </form>
+</div>
+{% endblock %}

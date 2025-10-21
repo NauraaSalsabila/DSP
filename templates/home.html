@@ -1,16 +1,35 @@
 {% extends "base.html" %}
-
-{% block title %}Home - DSP Attrition{% endblock %}
-
+{% block title %}Home | DSP Attrition{% endblock %}
 {% block content %}
-<section class="landing">
-    <div class="hero">
-        <h1>Welcome to DSP Attrition Dashboard</h1>
-        <p>
-            Sistem ini dirancang untuk menganalisis faktor-faktor yang memengaruhi 
-            <strong>Attrition Karyawan</strong> dan memberikan insight berbasis data.
-        </p>
-        <a href="/dashboard" class="btn">Lihat Dashboard</a>
+<div class="home-container">
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Welcome to <span class="highlight">DSP Attrition System</span></h1>
+      <p>
+        Sistem ini membantu perusahaan menganalisis faktor-faktor yang memengaruhi tingkat <strong>attrition</strong> karyawan
+        dengan memanfaatkan <strong>machine learning</strong> untuk prediksi berbasis data.
+      </p>
+      <div class="hero-buttons">
+        <a href="/dashboard" class="btn-main">📊 Lihat Dashboard</a>
+        <a href="/predict" class="btn-secondary">🤖 Coba Prediksi</a>
+      </div>
     </div>
-</section>
+  </section>
+
+  <section class="features-section">
+    <h2>✨ Fitur Utama</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h3>📈 Dashboard Interaktif</h3>
+        <p>Visualisasi data attrition dan faktor yang memengaruhi perilaku karyawan dalam format yang mudah dipahami.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🧠 Prediksi Cerdas</h3>
+        <p>Dilatih dari dataset HR akan memprediksi risiko attrition berdasarkan karakteristik karyawan.</p>
+      </div>
+    </div>
+  </section>
+
+
+</div>
 {% endblock %}
