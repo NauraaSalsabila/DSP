@@ -38,22 +38,24 @@
 
   {% if prediction %}
   <div class="prediction-result">
-    <h2>Prediction Result</h2>
+    <h2>Hasil Prediksi</h2>
     <div class="prediction-value {% if prediction == 'Yes' %}yes{% else %}no{% endif %}">
       {{ prediction }}
     </div>
 
     {% if probability %}
     <p class="prediction-probability">
-      Confidence: <strong>{{ probability }}</strong>
+      Tingkat Keyakinan: <strong>{{ probability }}</strong>
     </p>
     {% endif %}
 
     <p class="prediction-explanation">
       {% if prediction == 'Yes' %}
-      High risk of attrition. Consider reviewing employee engagement strategies.
+      Karyawan memiliki risiko <strong>tinggi</strong> untuk keluar dari perusahaan.
+      Pertimbangkan untuk meninjau strategi keterlibatan, kepuasan kerja, dan keseimbangan kehidupan kerja.
       {% else %}
-      Low risk of attrition. Continue maintaining positive work environment.
+      Karyawan memiliki risiko <strong>rendah</strong> untuk keluar.
+      Pertahankan lingkungan kerja yang positif dan dukungan yang baik.
       {% endif %}
     </p>
   </div>
@@ -62,17 +64,24 @@
   <form method="post" class="predict-form">
     <div class="form-grid">
 
-      <!-- AGE -->
+      <!-- EDUCATION FIELD -->
       <div class="form-row">
-        <label for="age">
-          Age
+        <label for="educationfield">
+          Education Field
           <span class="tooltip">ℹ️
-            <span class="tooltiptext">Umur karyawan (18–65 tahun)</span>
+            <span class="tooltiptext">
+              Bidang pendidikan terakhir karyawan<br>
+            </span>
           </span>
         </label>
-        <input id="age" type="number" name="Age"
-               value="{{ features['Age'] if features else '' }}"
-               min="18" max="65" required>
+        <select id="educationfield" name="EducationField" required>
+          {% for ef in [
+            "Human Resources", "Life Sciences", "Marketing",
+            "Medical", "Other", "Technical Degree"
+          ] %}
+          <option value="{{ ef }}" {% if features and features['EducationField'] == ef %}selected{% endif %}>{{ ef }}</option>
+          {% endfor %}
+        </select>
       </div>
 
       <!-- STOCK OPTION LEVEL -->
@@ -122,10 +131,10 @@
           Environment Satisfaction
           <span class="tooltip">ℹ️
             <span class="tooltiptext">
-              1 = Very Low<br>
-              2 = Low<br>
-              3 = Medium<br>
-              4 = High
+              1 = Sangat Rendah<br>
+              2 = Rendah<br>
+              3 = Cukup<br>
+              4 = Tinggi
             </span>
           </span>
         </label>
@@ -142,10 +151,10 @@
           Job Involvement
           <span class="tooltip">ℹ️
             <span class="tooltiptext">
-              1 = Low<br>
-              2 = Moderate<br>
-              3 = High<br>
-              4 = Very High
+              1 = Rendah<br>
+              2 = Sedang<br>
+              3 = Tinggi<br>
+              4 = Sangat Tinggi
             </span>
           </span>
         </label>
@@ -162,10 +171,10 @@
           Job Satisfaction
           <span class="tooltip">ℹ️
             <span class="tooltiptext">
-              1 = Very Low<br>
-              2 = Low<br>
-              3 = Medium<br>
-              4 = High
+              1 = Sangat Rendah<br>
+              2 = Rendah<br>
+              3 = Cukup<br>
+              4 = Tinggi
             </span>
           </span>
         </label>

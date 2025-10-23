@@ -7,35 +7,44 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# === Konfigurasi DagsHub ===
+DAGSHUB_URI = "https://dagshub.com/NauraaSalsabila/DSP_ATTRITION.mlflow"
+MODEL_NAME = "xgb-attrition-model-encoded"  
+MODEL_VERSION = "2" 
+LOCAL_MODEL_PATH = "model/xgb_attrition_model_encoded.pkl"
+
+
 def get_model():
     """
-    Mengunduh model dari DagsHub MLflow Registry jika model lokal tidak tersedia.
+    Mengunduh model terbaru dari DagsHub MLflow Model Registry.
+    Jika berhasil, model juga disimpan secara lokal agar bisa digunakan offline.
     """
-    dagshub_uri = "https://dagshub.com/NauraaSalsabila/DSP_ATTRITION.mlflow"
-    mlflow.set_tracking_uri(dagshub_uri)
+    mlflow.set_tracking_uri(DAGSHUB_URI)
 
     username = os.getenv("DAGSHUB_USERNAME")
     token = os.getenv("DAGSHUB_TOKEN")
 
     # Validasi kredensial
     if not username or not token:
-        print("⚠️ DagsHub credentials tidak ditemukan di environment variables. "
-              "Gunakan model lokal sebagai fallback.")
+        print("⚠️ DagsHub credentials tidak ditemukan. "
+              "Pastikan DAGSHUB_USERNAME dan DAGSHUB_TOKEN ada di .env.")
         return None
 
     os.environ["MLFLOW_TRACKING_USERNAME"] = username
     os.environ["MLFLOW_TRACKING_PASSWORD"] = token
 
-    model_uri = "models:/xgb-attrition-model/1"
-    local_path = "model/xgb_attrition_model.pkl"
+    model_uri = f"models:/{MODEL_NAME}/{MODEL_VERSION}"
 
     print(f"📥 Mengunduh model dari MLflow Registry: {model_uri} ...")
     try:
         model = mlflow.xgboost.load_model(model_uri)
-        os.makedirs(os.path.dirname(local_path), exist_ok=True)
-        joblib.dump(model, local_path)
-        print(f"✅ Model XGBoost berhasil disimpan di: {local_path}")
+
+        # Simpan lokal
+        os.makedirs(os.path.dirname(LOCAL_MODEL_PATH), exist_ok=True)
+        joblib.dump(model, LOCAL_MODEL_PATH)
+        print(f"✅ Model berhasil diunduh dan disimpan di: {LOCAL_MODEL_PATH}")
         return model
+
     except Exception as e:
         print(f"❌ Gagal mengunduh model dari DagsHub: {e}")
         return None
@@ -43,24 +52,24 @@ def get_model():
 
 def load_model():
     """
-    Memuat model dari file lokal jika tersedia, atau mencoba unduh dari DagsHub jika tidak.
+    Memuat model XGBoost:
+    - Pertama dari file lokal (offline mode)
+    - Jika tidak ada, otomatis download dari DagsHub (online)
     """
-    local_path = "model/xgb_attrition_model.pkl"
-    abs_path = os.path.abspath(local_path)
-
+    abs_path = os.path.abspath(LOCAL_MODEL_PATH)
     print(f"🔍 Memeriksa model lokal di: {abs_path}")
 
-    # Coba pakai model lokal dulu
-    if os.path.exists(local_path):
+    # Coba load model lokal dulu
+    if os.path.exists(LOCAL_MODEL_PATH):
         try:
-            model = joblib.load(local_path)
-            print(f"✅ Model XGBoost berhasil dimuat dari: {local_path}")
+            model = joblib.load(LOCAL_MODEL_PATH)
+            print(f"✅ Model berhasil dimuat dari lokal: {LOCAL_MODEL_PATH}")
             return model
         except Exception as e:
-            print(f"❌ Gagal memuat model lokal: {e}")
+            print(f"⚠️ Gagal memuat model lokal: {e}")
 
-    # Kalau model lokal tidak ada, coba unduh dari DagsHub
-    print("⚠️ Model lokal tidak ditemukan. Mencoba unduh dari DagsHub...")
+    # Kalau gagal atau belum ada file, download dari DagsHub
+    print("🌐 Model lokal tidak ditemukan. Mencoba unduh dari DagsHub...")
     model = get_model()
 
     if model is None:
